@@ -60,3 +60,21 @@ Command for load:
 	`aws autoscaling update-auto-scaling-group --auto-scaling-group-name <AutoScalingGroupName> --desired-capacity <DesiredCapacity> 
 - Verify the Change:`
 - You can confirm that the changes were applied by checking the Auto Scaling group details in the AWS Management Console.
+
+
+##Limitations:
+1. In case application deployment failed due to port is already in use - We need to stop the exiting runs:
+	For eg: 
+		`$ lsof -t -i:5000   ### Get the list of process-id's`
+		4742
+		4936
+
+		### Kill them by running the sudo kill command - for eg:
+			ubuntu@ip-172-31-22-138:~$ `sudo kill -9 4742 4936`
+			
+		Make sure you don't have any process id running on port number 5000
+			ubuntu@ip-172-31-22-138:~$ `lsof -t -i:5000`
+
+2. For any reason if my ec2 instance url or public ip changes - we need to get the latest IP address (Please contact me for these kind of issues, I can resolve quickly) - No time to allocate static IP for my instance. So whenever the EC2 instance restarts IP address will get change
+
+
