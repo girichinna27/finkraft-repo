@@ -1,0 +1,70 @@
+name: Deploy and Test to EC2
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.12
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: .
+        
+      - name: Lint code
+        run: flake8 app.py  # Use your preferred linter (e.g., flake8)
+
+  testing:
+    runs-on: ubuntu-latest
+    needs: linting
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.10.12
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+        working-directory: .
+
+      - name: Run tests
+        run: python3 test_app.py   # Replace with your testing command
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [linting, testing]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy SSH key to the runner
+        working-directory: .
+        run: |
+          echo "$EC2_SSH_KEY" > ssh-key.pem
+          chmod 600 ssh-key.pem
+          mkdir -p ~/.ssh
+          touch ~/.ssh/known_hosts
+          ssh-keyscan -H ${{ secrets.EC2_INSTANCE_IP }} >> ~/.ssh/known_hosts
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Deploy Python script
+        run: |
+          scp -i ssh-key.pem app.py ubuntu@${{ secrets.EC2_INSTANCE_IP }}:/home/ubuntu/
+          ssh -i ssh-key.pem ubuntu@${{ secrets.EC2_INSTANCE_IP }} "python3 /home/ubuntu/app.py"
+        env:
+          EC2_INSTANCE_IP: ${{ secrets.EC2_INSTANCE_IP }}
