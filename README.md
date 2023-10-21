@@ -62,7 +62,7 @@ Command for load:
 - You can confirm that the changes were applied by checking the Auto Scaling group details in the AWS Management Console.
 
 
-##Limitations:
+## Limitations:
 1. In case application deployment failed due to port is already in use - We need to stop the exiting runs:
 	For eg: 
 		`$ lsof -t -i:5000   ### Get the list of process-id's`
