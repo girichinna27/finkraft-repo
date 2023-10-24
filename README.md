@@ -21,16 +21,16 @@ This repo contains 4 main files:
 1. Download the .pem file from my email / git repo & change the permissions to the .pem file as follows:
 	i) Open your terminal & go to the location of .pem file
 	ii) Run the following command to set the required permissions:
-	*`chmod 600 finkraft-keypair.pem`* 
+	*`chmod 600 finkraft-keypair-new.pem.pem`* 
 
 3. Run the following command from your terminal to connect to EC2 instance:
    `$ ssh -i "finkraft-keypair-new.pem.pem" ubuntu@ec2-13-49-245-183.eu-north-1.compute.amazonaws.com`
 
 
 ## Note: 
-I had given load to the server for testing the auto-scaling, it's working as expected. See the attached screenshot for reference:
+I had given load to the server for testing the auto-scaling, it's working as expected.
 Command for load:
-## `stress --cpu 4 --timeout 60`
+## `stress --cpu 4 --timeout 60`    ### Run this command from EC2 instance terminal
 
 
 # For manual Auto scaling - There are 2 ways:
@@ -63,18 +63,16 @@ Command for load:
 
 
 ## Limitations:
-1. In case application deployment failed due to port is already in use - We need to stop the exiting runs:
+1. In case application deployment failed due to port is already in use - We need to stop the exiting runs from the EC2 instance console:
 	For eg: 
-	`$ lsof -t -i:5000   ### Get the list of process-id's`
+	`$ lsof -t -i:5000   ### Get the list of process-id's running on port: 5000`
 	   4742
 	   4936
 
-	### Kill them by running the sudo kill command - for eg:
+	### Kill all the process running on port: 5000 by running the sudo kill command - for eg:
 		`ubuntu@ip-172-31-22-138:~$ `sudo kill -9 4742 4936`
 		
 	Make sure you don't have any process id running on port number 5000
 		`ubuntu@ip-172-31-22-138:~$ `lsof -t -i:5000`
 
-2. For any reason if my ec2 instance url or public ip changes - we need to get the latest IP address (Please contact me for these kind of issues, I can resolve quickly) - No time to allocate static IP for my instance. So whenever the EC2 instance restarts IP address will get change
-
-
+2. For any reason if my ec2 instance url or public ip changes - We need to get the latest IP address (Please contact me for these kind of issues, I can resolve quickly) - No time to allocate static IP for my instance. So whenever the EC2 instance restarts IP address will get change
