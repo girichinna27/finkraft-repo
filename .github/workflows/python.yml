@@ -10,10 +10,13 @@ on:
 
 jobs:
   aig:
+    #if: github.event_name == 'pull_request'
     uses: girichinna27/opsmx-ssd-utils/.github/workflows/aig-remediation.yml@main
-    #with:
-    #  service_name: oes-echo
-    #  base_branch: release
+    secrets:
+      GH_TOKEN: ${{ secrets.GIT_TOKEN }}
+    with:
+      service_name: oes-echo
+      base_branch: release
   linting:
     runs-on: ubuntu-latest
     steps:
