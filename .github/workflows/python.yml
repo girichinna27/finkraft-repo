@@ -5,8 +5,15 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    types: [opened, synchronize, reopened]            
 
 jobs:
+  aig:
+    uses: girichinna27/opsmx-ssd-utils/.github/workflows/aig-remediation.yml@main
+    with:
+      service_name: oes-echo
+      base_branch: release
   linting:
     runs-on: ubuntu-latest
     steps:
