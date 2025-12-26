@@ -75,4 +75,4 @@ Command for load:
 	Make sure you don't have any process id running on port number 5000
 		`ubuntu@ip-172-31-22-138:~$ `lsof -t -i:5000`
 
-2. For any reason if my ec2 instance url or public ip changes - We need to get the latest IP address (Please contact me for these kind of issues, I can resolve quickly) - No time to allocate static IP for my instance. So whenever the EC2 instance restarts IP address will get change
+2. For any reason if my ec2 instance url or public ip changes - We need to get the latest IP address (Please contact me for these kind of issues, I can resolve quickly) - No time to allocate static IP for my instance. So whenever the EC2 instance restarts IP address will get change...
